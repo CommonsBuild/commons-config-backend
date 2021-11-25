@@ -80,11 +80,11 @@ class AugmentedBondingCurve(Resource):
         parser.add_argument('exitTribute', type=str)
         parser.add_argument('ragequitAmount', type=str)
         parser.add_argument('initialBuy', type=str)
+        parser.add_argument('reserveBalance', type=str)
         parser.add_argument('stepList', action='append')
         parser.add_argument('virtualSupply', type=str)
         parser.add_argument('virtualBalance', type=str)
         parser.add_argument('zoomGraph', type=str)
-        parser.add_argument('includeMilestones', type=str)
         parameters = parser.parse_args()
         commons_percentage = float(parameters['commonsTribute']) if parameters['commonsTribute'] is not None else 0.05
         opening_price = float(parameters['openingPrice']) if parameters['openingPrice'] is not None else 1.50
@@ -92,30 +92,27 @@ class AugmentedBondingCurve(Resource):
         exit_tribute = float(parameters['exitTribute']) if parameters['exitTribute'] is not None else 0.05
         ragequit_amount = float(parameters['ragequitAmount']) if parameters['ragequitAmount'] is not None else 0
         initial_buy = float(parameters['initialBuy']) if parameters['initialBuy'] is not None else 0 
+        scenario_reserve_balance = float(parameters['reserveBalance']) if parameters['reserveBalance'] is not None else (1571223.57 - initial_buy - ragequit_amount)*(1-commons_percentage)     
         steplist = parameters['stepList'] if parameters['stepList'] is not None else ""
         virtual_supply = float(parameters['virtualSupply']) if parameters['virtualSupply'] is not None else -1
         virtual_balance = float(parameters['virtualBalance']) if parameters['virtualBalance'] is not None else -1 
         zoom_graph = int(parameters['zoomGraph']) if parameters['zoomGraph'] is not None else 0
-        include_milestones = int(parameters['includeMilestones']) if parameters['includeMilestones'] is not None else 0
 
-
-        #add default steps
-        steplist.insert(0, "[5000, 'wxDAI']")
-        steplist.insert(1, "[100000, 'wxDAI']")
-        steplist.insert(2, "[3000, 'TEC']")
-
-        augmented_bonding_curve_model = BondingCurveHandler(
-                commons_percentage=commons_percentage,
-                ragequit_amount=ragequit_amount,
-                opening_price=opening_price,
-                entry_tribute=entry_tribute,
-                exit_tribute=exit_tribute,
-                initial_buy=initial_buy,
-                virtual_supply= virtual_supply,
-                virtual_balance= virtual_balance,
-                steplist=steplist,
-                zoom_graph= zoom_graph,
-                include_milestones=include_milestones )
+        try:
+            augmented_bonding_curve_model = BondingCurveHandler(
+                    commons_percentage=commons_percentage,
+                    ragequit_amount=ragequit_amount,
+                    opening_price=opening_price,
+                    entry_tribute=entry_tribute,
+                    exit_tribute=exit_tribute,
+                    initial_buy=initial_buy,
+                    scenario_reserve_balance=scenario_reserve_balance,
+                    virtual_supply= virtual_supply,
+                    virtual_balance= virtual_balance,
+                    steplist=steplist,
+                    zoom_graph= zoom_graph )
+        except ValueError as ve:
+            return jsonify(str(ve))
 
         
         return jsonify(augmented_bonding_curve_model.get_data())
@@ -147,14 +144,11 @@ class IssueGenerator(Resource):
         abc['exitTribute'] = float(abc['exitTribute']) if abc['exitTribute'] is not None else 0.05
         abc['ragequitAmount'] = float(abc['ragequitAmount']) if abc['ragequitAmount'] is not None else 0
         abc['initialBuy'] = float(abc['initialBuy']) if abc['initialBuy'] is not None else 0 
-        #removed this line following the feature cut 25/11/21
-        #abc['reserveBalance'] = float(abc['reserveBalance']) if abc['reserveBalance'] is not None else (1571223.57 - abc.initial_buy - abc.ragequit_amount)*(1-abc.commons_percentage)     
+        abc['reserveBalance'] = float(abc['reserveBalance']) if abc['reserveBalance'] is not None else (1571223.57 - abc.initial_buy - abc.ragequit_amount)*(1-abc.commons_percentage)     
         abc['stepList'] = abc['stepList'] if abc['stepList'] is not abc else ""
         abc['virtualSupply'] = float(abc['virtualSupply']) if abc['virtualSupply'] is not None else -1
         abc['virtualBalance'] = float(abc['virtualBalance']) if abc['virtualBalance'] is not None else -1 
         abc['zoomGraph'] = int(abc['zoomGraph']) if abc['zoomGraph'] is not None else 0
-        #added the milestone generation for the issue generator
-        abc['includeMilestones'] = int(1)
 
         issue_generator = IssueGeneratorModel(
             raw_body=parameters,

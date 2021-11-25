@@ -120,20 +120,17 @@ class BondingCurveHandler():
                  entry_tribute,
                  exit_tribute,
                  initial_buy,
+                 scenario_reserve_balance,
                  steplist,   
                  virtual_supply= -1,
                  virtual_balance= -1,
                  zoom_graph=0,
-                 plot_mode=0,
-                 include_milestones=0):
+                 plot_mode=0):
 
         #scale input numbers down by 1000 for the bonding curve calculations
         ragequit_amount = ragequit_amount / 1000
         initial_buy= initial_buy / 1000
-
-        #Changed to hardcode it at the launch reserve balance. 25/22/21
-        scenario_reserve_balance = (TOTAL_HATCH_FUNDING - initial_buy - ragequit_amount)*(1-commons_percentage)     
-        
+        scenario_reserve_balance = scenario_reserve_balance / 1000
         virtual_supply =  TOTAL_INITIAL_TECH_SUPPLY if virtual_supply == -1 else (virtual_supply / 1000)
         virtual_balance = TOTAL_HATCH_FUNDING if virtual_balance == -1 else (virtual_balance / 1000)
 
@@ -174,19 +171,17 @@ class BondingCurveHandler():
             self.steps_table["step"] = 0
 
 
-        # THIS BECOMES OBSOLETE WITH THE INITIAL SCENARIO REMOVAL
         #set the current supply to the point where the scenarios are going to happen (if it isn't the launch situation)
         # if it's the launch situation, the supply change from the buy in has already been saved before
         # rounded a bit to make sure it gets triggered when necessary
-        # if(round(scenario_reserve_balance, 3) != round(self.initialization_balance, 3)):
-        #     scenario_supply= self.bonding_curve.get_supply(float(scenario_reserve_balance))
-        #     self.bonding_curve.set_new_supply(scenario_supply)
+        if(round(scenario_reserve_balance, 3) != round(self.initialization_balance, 3)):
+            scenario_supply= self.bonding_curve.get_supply(float(scenario_reserve_balance))
+            self.bonding_curve.set_new_supply(scenario_supply)
         
         #calculate the scenarios
         self.steps_table = self.steps_table.append(self.generate_outputs_table(bondingCurve= self.bonding_curve, steplist= steplist_parsed))
         self.zoom_graph = zoom_graph
         self.plot_mode = plot_mode
-        self.include_milestones = include_milestones
     
 
     def get_data(self):
@@ -197,20 +192,16 @@ class BondingCurveHandler():
         clean_figure_data['reserveRatio'] = self.bonding_curve.reserve_ratio()
         
         figure_bonding_curve= {"chartData": {}}
-
-        if self.include_milestones == 1:
-            figure_milestone_table =self.get_milestone_table(self.bonding_curve) 
-            figure_bonding_curve['milestoneTable'] = figure_milestone_table
-        
+        figure_milestone_table =self.get_milestone_table(self.bonding_curve) 
         figure_initial_fund_allocation = self.get_allocation_table(self.steps_table, self.initialization_balance, self.commons_reserve)
-        figure_bonding_curve['fundAllocations'] = figure_initial_fund_allocation
-
-
+        
         if self.steps_table.empty:
             figure_bonding_curve['chartData'] = clean_figure_data
+            figure_bonding_curve['milestoneTable'] = figure_milestone_table
+            figure_bonding_curve['fundAllocations'] = figure_initial_fund_allocation
             return figure_bonding_curve
         else: 
-            figure_buy_sell_table =self.steps_table.loc[:,["step", "currentPriceParsed","currentBalanceParsed","amountInParsed", "tributeCollectedParsed", "amountOutParsed", "newPriceParsed", "slippage"]].to_dict(orient='list')
+            figure_buy_sell_table =self.steps_table.loc[:,["step", "currentPriceParsed", "currentSupplyParsed","amountInParsed", "tributeCollectedParsed", "amountOutParsed", "newPriceParsed", "slippage"]].to_dict(orient='list')
             extended_figure_data = clean_figure_data
             #get single points with full coordinates
             extended_figure_data['singlePoints'] = self.get_single_point_coordinates(self.steps_table)
@@ -222,6 +213,8 @@ class BondingCurveHandler():
 
             figure_bonding_curve['chartData'] = extended_figure_data
             figure_bonding_curve['stepTable'] = figure_buy_sell_table
+            figure_bonding_curve['milestoneTable'] = figure_milestone_table
+            figure_bonding_curve['fundAllocations'] = figure_initial_fund_allocation
 
             return figure_bonding_curve
 
@@ -270,14 +263,7 @@ class BondingCurveHandler():
             
             amount_in_parsed = str(format(amount_in*1000, '.2f')) + " " +  str(token_type)
             #amount_in_parsed = str(round(amount_in, 2)) + "k " + str(token_type)
-            #new amount in parsed:
-            amount_in_parsed = {
-                "type": "in" if token_type == "wxDAI" else "out",
-                "amount": str(format(amount_in*1000, '.2f')),
-                "currency": token_type
-            }
-
-
+        
             amount_out = 0
             amount_out_parsed = ""
             new_supply = 0
@@ -439,9 +425,8 @@ class BondingCurveHandler():
             min_range = 0
             max_range = 500
         else:
-            minimum = min(steps_table['currentSupply'].min(), steps_table['newSupply'].min())
-            min_range = 0 if (minimum < 10 or zoom_graph == 0 ) else  minimum - 10 
-            max_range = steps_table['newSupply'].max() + (50 if zoom_graph == 0 else 10)
+            min_range = 0 if  zoom_graph == 0 else ( min(steps_table['currentSupply'].min(), steps_table['newSupply'].min()) - 50)
+            max_range = steps_table['newSupply'].max() + (200 if zoom_graph == 0 else 50)
 
 
         return [min_range, max_range]
@@ -504,7 +489,7 @@ class BondingCurveHandler():
         if initial_buy < 0 or initial_buy > (TOTAL_HATCH_FUNDING - ragequit_amount):
             raise ValueError("Error: The Initial Buy is either negative or bigger than the remaining Hatch Funding after Ragequits.")
         if scenario_reserve_balance <= 0:
-            raise ValueError("Error: The Initial reserve balance is <= 0")
+            raise ValueError("Error: Invalid  Hatch Scenario Funding Parameter.")
         if not isinstance(steplist, list):
             #TO DO: in-depth validation of the steplist
             raise ValueError("Error: Invalid Steplist Parameter.")
