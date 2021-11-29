@@ -92,7 +92,7 @@ class AugmentedBondingCurve(Resource):
         exit_tribute = float(parameters['exitTribute']) if parameters['exitTribute'] is not None else 0.05
         ragequit_amount = float(parameters['ragequitAmount']) if parameters['ragequitAmount'] is not None else 0
         initial_buy = float(parameters['initialBuy']) if parameters['initialBuy'] is not None else 0 
-        steplist = parameters['stepList'] if parameters['stepList'] is not None else ""
+        steplist = parameters['stepList'] if parameters['stepList'] is not None else []
         virtual_supply = float(parameters['virtualSupply']) if parameters['virtualSupply'] is not None else -1
         virtual_balance = float(parameters['virtualBalance']) if parameters['virtualBalance'] is not None else -1 
         zoom_graph = int(parameters['zoomGraph']) if parameters['zoomGraph'] is not None else 0
