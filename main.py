@@ -124,7 +124,6 @@ class AugmentedBondingCurve(Resource):
                 entry_tribute=entry_tribute,
                 exit_tribute=exit_tribute,
                 initial_buy=initial_buy,
-                scenario_reserve_balance=scenario_reserve_balance,
                 virtual_supply=virtual_supply,
                 virtual_balance=virtual_balance,
                 steplist=steplist,
