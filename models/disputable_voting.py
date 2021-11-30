@@ -59,11 +59,26 @@ class DisputableVotingModel:
         self.output_dict['output']['pieChart'] = pie_chart_items
 
         # Table Data
-        table_items = {
+        time_vote = {
             'noExtension': self.vote_duration,
             'firstExtension': self.vote_duration + self.quiet_ending_extension,
             'secondExtension': self.vote_duration + (2 * self.quiet_ending_extension)
         }
-        self.output_dict['output']['table'] = table_items
+        time_review = {
+            'noExtension': self.vote_duration - self.delegated_voting_period,
+            'firstExtension': self.vote_duration - self.delegated_voting_period + self.quiet_ending_extension,
+            'secondExtension': self.vote_duration - self.delegated_voting_period + (2 * self.quiet_ending_extension)
+        }
+        time_execute = {
+            'noExtension': self.vote_duration + self.execution_delay,
+            'firstExtension': self.vote_duration + self.execution_delay + self.quiet_ending_extension,
+            'secondExtension': self.vote_duration + self.execution_delay + (2 * self.quiet_ending_extension)
+        }
+
+        self.output_dict['output']['table'] = {
+            'timeVote': [time_vote['noExtension'], time_vote['firstExtension'], time_vote['secondExtension']],
+            'timeReview': [time_review['noExtension'], time_review['firstExtension'], time_review['secondExtension']],
+            'timeExecute': [time_execute['noExtension'], time_execute['firstExtension'], time_execute['secondExtension']]
+        }
 
         return self.output_dict

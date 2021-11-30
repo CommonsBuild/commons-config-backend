@@ -1,11 +1,8 @@
 advanced_settings_data = """
 ### *Advanced Settings 
 
->This will be empty or non-existent if the user did not change any advanced settings from their default. Any settings changed from default will show up here
-
 | Parameter               | Value                       |
 |:-----------------------:|:---------------------------:|
-| Common Pool Amount      | {commons_pool_amount} wxDAI |
 | HNY Liquidity           | {hny_liquidity} wxDAI       |
 | Garden Liquidity        | {garden_liquidity} TEC      |
 | Virtual Supply          | {virtual_supply} TEC        |
@@ -57,11 +54,11 @@ issue_data = """
 
 ### Module 3: Tao Voting
 
-| Parameters              | Value                                |
+| Parameter               | Value                                |
 | ----------------------- | ------------------------------------ |
 | Support Required        | {support_required}%                  |
 | Minimum Quorum          | {minimum_quorum}%                    |
-| Vote Duration           | {vote_duration_days} days(s)         |
+| Vote Duration           | {vote_duration_days} day(s)         |
 | Delegated Voting Period | {delegated_voting_days} day(s)       |
 | Quiet Ending Period     | {quiet_ending_days} day(s)           |
 | Quiet Ending Extension  | {quiet_ending_extension_days} day(s) |
@@ -78,9 +75,11 @@ issue_data = """
 
 # Module 1: Token Freeze and Token Thaw
 
-### Data:
+### Hatcher's TEC Release Schedule 
 ![]({token_lockup_image})
+>This is the release schedule for TEC that was given to Hatchers. Their TEC will start out frozen and then slowly become liquid according to the graph above.
 
+### Data
 | Duration                  | % of Tokens Released  | Price Floor of Token   |
 | ------------------------- | --------------------- | ---------------------- |
 | 3 months                  | {tokens_released[0]}% | {price_floor[0]} wxDAI |
@@ -102,10 +101,11 @@ issue_data = """
 
 # Module 2: Augmented Bonding Curve (ABC)
 
-### Data:
-
+### TEC Price vs ABC Reserve Holdings
 ![]({abc_image})
+>The ABC mints and burns TEC tokens, the price of the TEC token is dependent on the funds that is held in the Reserve. This graph shows how the ABC's Price for TEC tokens changes with the ABC's Reserve Balance. The Initial Buy that will happen at launch is highlighted.
 
+### Data
 | Step #             | Current Price      | Amount In      | Tribute Collected      | Amount Out      | New Price      | Price Slippage      |
 | ------------------ | ------------------ | -------------- | ---------------------- | --------------- | -------------- | ------------------- |
 {abc_steps}
@@ -163,10 +163,11 @@ We're very bullish on TEC so we provide the BUY scenario at launch to compare pr
 
 # Module 3: Tao Voting
 
-### Data: 
-
+### Tao Voting Timeline From Proposal To Execution
 ![]({tao_voting_image})
+>This shows how the timeline stacks up for yes/no time based votes that can change the configuration after launch.
 
+### Data
 |# of Quiet Ending Extensions                 | No Extensions                         | With 1 Extension                                  | With 2 Extensions                                  |
 | ------------------------------------------- | ------------------------------------- | ------------------------------------------------- | -------------------------------------------------- |
 | **Time to Vote on Proposals**               | {vote_duration_days} days             | {vote_duration_days_1_extension} days             | {vote_duration_days_2_extensions} days             |
@@ -179,16 +180,18 @@ We're very bullish on TEC so we provide the BUY scenario at launch to compare pr
 - **Delegated Voting Period** is set for **{delegated_voting_days} day(s)**, meaning that Delegates will have {delegated_voting_days} day(s) to use their delegated voting power to vote on a proposal. 
 - **Quiet Ending Period**: **{quiet_ending_days} day(s)**, this means that {quiet_ending_days} day(s) before the end of the Vote Duration, if the vote outcome changes, the Quiet Ending Extension will be triggered. 
 - **Quiet Ending Extension**: **{quiet_ending_extension_days} day(s)**, meaning that if the vote outcome changes during the Quiet Ending Period, an additional {quiet_ending_extension_days} day(s) will be added for voting.
-- **Execution Delay**: **{execution_delay_days} days(s)**, meaning that there is an {execution_delay_days} day delay after the vote is passed before the proposed action is executed.  
+- **Execution Delay**: **{execution_delay_days} day(s)**, meaning that there is an {execution_delay_days} day delay after the vote is passed before the proposed action is executed.  
 
 ### Strategy:
 {tao_voting_strategy}
 
 # Module 4: Conviction Voting
 
-### Data: 
+### Minimum Percent of Voting Tokens Needed to Pass Funding Requests
 ![]({conviction_voting_image})
+>This shows how the minimum percent of tokens needed to pass proposals after 2 weeks varies with the percent of the Common Pool funds being requested.
 
+### Data
 | Proposal  | Requested Amount (wxDAI) | Common Pool (wxDAI)       | Effective supply (TEC)  | Tokens Needed To Pass (TEC) |
 |:---------:|:------------------------:|:-------------------------:|:-----------------------:|:---------------------------:|
 |     1     | {requested_amount[0]:,}  | {amount_common_pool[0]:,} | {effective_supply[0]:,} | {min_tokens_pass[0]}        |
