@@ -127,7 +127,9 @@ class AugmentedBondingCurve(Resource):
                 virtual_supply=virtual_supply,
                 virtual_balance=virtual_balance,
                 steplist=steplist,
-                zoom_graph=zoom_graph)
+                zoom_graph=zoom_graph,
+                include_milestones=include_milestones
+            )
         except ValueError as ve:
             return jsonify(str(ve))
 
