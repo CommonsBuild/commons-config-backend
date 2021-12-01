@@ -278,8 +278,6 @@ class BondingCurveHandler():
             # to avoid the most obvious error. TO DO: in-depth validation of the steplist...
             token_type = "wxDAI" if step[1] == "wxDai" else step[1]
 
-            amount_in_parsed = str(
-                format(amount_in*1000, '.2f')) + " " + str(token_type)
             #amount_in_parsed = str(round(amount_in, 2)) + "k " + str(token_type)
             # new amount in parsed:
             amount_in_parsed = {
