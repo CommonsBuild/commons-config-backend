@@ -96,7 +96,7 @@ class IssueGeneratorModel:
             opening_price=opening_price,
             entry_tribute=entry_tribute,
             exit_tribute=exit_tribute,
-            scenario_reserve_balance=scenario_reserve_balance,
+            #scenario_reserve_balance=scenario_reserve_balance,
             initial_buy=initial_buy,
             steplist=steplist,
             zoom_graph=zoom_graph,
