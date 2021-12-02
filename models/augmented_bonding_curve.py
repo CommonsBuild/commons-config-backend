@@ -455,7 +455,8 @@ class BondingCurveHandler():
             maximum = max(steps_table['newSupply'].max(
             ), steps_table['newSupply'].max())
             min_range = 0 if zoom_graph == 0 else minimum * 0.975
-            max_range = maximum * 1.025 if zoom_graph == 0 else maximum * 1.01
+            max_range = maximum * 1.01 if zoom_graph == 0 else maximum * 1.001
+            #max_range = maximum * 1.025 if zoom_graph == 0 else maximum * 1.01
         #print("min: " + str(min_range))
         #print("max: " + str(max_range))
         return [min_range, max_range]
