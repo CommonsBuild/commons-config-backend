@@ -102,7 +102,6 @@ class BondingCurveHandler():
     entry_tribute: float between 0-0.99. Percentage of funds substracted on buy (mint) operations before interacting with the bonding curve
     exit_tribute: float between 0-0.99. Percentage of funds substracted on sell (burn) operations after interacting with the boding curve
     initial_buy: float. Allows to represent an initial buy-in from the TEC in the scenario calculations
-    scenario_reserve_balance: float. Sets the point on the curve from which the scenario calculations are started
     virtual_supply: optional. Float, defaults to TOTAL_INITIAL_TECH_SUPPLY. Allows generating the bonding curve from a supply number different than the real one (eg to model lockups)
     virtual_balance: optional. Float, defaults to TOTAL_HATCH_FUNDING. Allows generating the bonding curve from a balance  number different than the real one (eg to model locked liquidity)
     steplist: list with format [["AMOUNT", "TOKEN"],["AMOUNT", "TOKEN"]]. Set of buy/sell operations applied to the bonding curve.
@@ -129,10 +128,6 @@ class BondingCurveHandler():
         ragequit_amount = ragequit_amount / 1000
         initial_buy = initial_buy / 1000
 
-        # Changed to hardcode it at the launch reserve balance. 25/22/21
-        scenario_reserve_balance = (
-            TOTAL_HATCH_FUNDING - initial_buy - ragequit_amount)*(1-commons_percentage)
-
         virtual_supply = TOTAL_INITIAL_TECH_SUPPLY if virtual_supply == - \
             1 else (virtual_supply / 1000)
         virtual_balance = TOTAL_HATCH_FUNDING if virtual_balance == - \
@@ -147,6 +142,10 @@ class BondingCurveHandler():
                 buf[1] = buf[1].strip("'")
                 steplist_parsed.append(buf)
 
+         # Determine initial supply and balance based on input
+        self.initialization_supply, self.initialization_balance, self.commons_reserve = self.get_initialization_values(
+            received_supply=virtual_supply, received_balance=virtual_balance, commons_percentage=commons_percentage, initial_buy=initial_buy, ragequit_amount=ragequit_amount)
+
         params_valid = self.check_param_validity(
             commons_percentage,
             ragequit_amount,
@@ -154,18 +153,15 @@ class BondingCurveHandler():
             entry_tribute,
             exit_tribute,
             initial_buy,
-            float(scenario_reserve_balance),
+            float(self.commons_reserve),
             steplist_parsed,
-            float(virtual_supply),
-            float(virtual_balance),
+            float(self.initialization_supply),
+            float(self.initialization_balance),
             int(zoom_graph),
             int(plot_mode)
         )
 
-        # Determine initial supply and balance based on input and initialize the bonding curve
-        self.initialization_supply, self.initialization_balance, self.commons_reserve = self.get_initialization_values(
-            received_supply=virtual_supply, received_balance=virtual_balance, commons_percentage=commons_percentage, initial_buy=initial_buy, ragequit_amount=ragequit_amount)
-
+        # Initialize the bonding curve
         self.bonding_curve = BondingCurve(
             self.initialization_balance, opening_price, self.initialization_supply, entry_tribute, exit_tribute)
 
@@ -176,14 +172,6 @@ class BondingCurveHandler():
             self.steps_table = self.steps_table.append(self.generate_outputs_table(
                 bondingCurve=self.bonding_curve, steplist=[[initial_buy, "wxDai"]]))
             self.steps_table["step"] = 0
-
-        # THIS BECOMES OBSOLETE WITH THE INITIAL SCENARIO REMOVAL
-        # set the current supply to the point where the scenarios are going to happen (if it isn't the launch situation)
-        # if it's the launch situation, the supply change from the buy in has already been saved before
-        # rounded a bit to make sure it gets triggered when necessary
-        # if(round(scenario_reserve_balance, 3) != round(self.initialization_balance, 3)):
-        #     scenario_supply= self.bonding_curve.get_supply(float(scenario_reserve_balance))
-        #     self.bonding_curve.set_new_supply(scenario_supply)
 
         # calculate the scenarios
         self.steps_table = self.steps_table.append(self.generate_outputs_table(
@@ -464,11 +452,12 @@ class BondingCurveHandler():
         else:
             minimum = min(steps_table['currentSupply'].min(
             ), steps_table['newSupply'].min())
-            min_range = 0 if (minimum < 10 or zoom_graph ==
-                              0) else minimum - 10
-            max_range = steps_table['newSupply'].max(
-            ) + (50 if zoom_graph == 0 else 10)
-
+            maximum = max(steps_table['newSupply'].max(
+            ), steps_table['newSupply'].max())
+            min_range = 0 if zoom_graph == 0 else minimum * 0.975
+            max_range = maximum * 1.025 if zoom_graph == 0 else maximum * 1.01
+        #print("min: " + str(min_range))
+        #print("max: " + str(max_range))
         return [min_range, max_range]
 
     def get_milestone_table(self, bCurve):
@@ -511,26 +500,28 @@ class BondingCurveHandler():
 
     # very basic validity check. TO DO expand balance and steplist checking
 
-    def check_param_validity(self, commons_percentage, ragequit_amount, opening_price, entry_tribute, exit_tribute, initial_buy,  scenario_reserve_balance, steplist, virtual_supply, virtual_balance, zoom_graph, plot_mode):
-        if commons_percentage < 0 or commons_percentage > 0.95:
-            raise ValueError("Error: Invalid Commons Percentage Parameter.")
+    def check_param_validity(self, commons_percentage, ragequit_amount, opening_price, entry_tribute, exit_tribute, initial_buy,  initial_commons_reserve, steplist, initial_supply, initial_balance, zoom_graph, plot_mode):
+        if initial_buy < 0 or initial_buy > (TOTAL_HATCH_FUNDING - ragequit_amount):
+            raise ValueError(
+                "Error: The Initial Buy is either negative or bigger than the remaining Hatch Funding after Ragequits.")
+        if commons_percentage < 0 or commons_percentage >= 1:
+            raise ValueError(
+                "Error: Commons Percentage Parameter out of bounds.")
         if ragequit_amount < 0:
             raise ValueError("Error: Invalid Ragequit Amount Parameter.")
         if opening_price <= 0:
             raise ValueError("Error: Invalid Initial Price Parameter.")
-        if virtual_supply <= 0:
-            raise ValueError("Error: Invalid  Virtual Supply Parameter.")
-        if virtual_balance <= 0:
-            raise ValueError("Error: Invalid  Virtual Balance Parameter.")
+        if initial_supply <= 0:
+            raise ValueError("Error: Intial Supply would be negative.")
+        if initial_balance <= 0:
+            raise ValueError("Error: Invalid  Balance would be negative.")
         if entry_tribute < 0 or entry_tribute >= 1:
             raise ValueError("Error: Invalid Entry Tribute Parameter.")
         if exit_tribute < 0 or exit_tribute >= 1:
             raise ValueError("Error: Invalid Exit Tribute Parameter.")
-        if initial_buy < 0 or initial_buy > (TOTAL_HATCH_FUNDING - ragequit_amount):
+        if initial_commons_reserve <= 0:
             raise ValueError(
-                "Error: The Initial Buy is either negative or bigger than the remaining Hatch Funding after Ragequits.")
-        if scenario_reserve_balance <= 0:
-            raise ValueError("Error: The Initial reserve balance is <= 0")
+                "Error: The Initial commons reserve balance is zero or less")
         if not isinstance(steplist, list):
             # TO DO: in-depth validation of the steplist
             raise ValueError("Error: Invalid Steplist Parameter.")
@@ -538,5 +529,11 @@ class BondingCurveHandler():
             raise ValueError("Error: Invalid Graph Zoom Parameter.")
         if not (plot_mode == 0 or plot_mode == 1):
             raise ValueError("Error: Invalid Plot Mode Parameter.")
+        # check resulting reserve ratio
+        res_rat = initial_balance / \
+            (opening_price * initial_supply)
+        if res_rat <= 0.01 or res_rat >= 1:
+            raise ValueError(
+                "Error: The resulting reserve ratio is outside the range of 1% - 100%")
 
         return True
