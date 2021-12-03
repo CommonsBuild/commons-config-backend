@@ -41,8 +41,6 @@ class BondingCurveInitializer:
         df = self.curve_over_balance(supply_ref-10, supply_ref, 100000)
         df_rounded = df.round(3)
 
-        print(df_rounded.head())
-        print(balance)
         index = int(df.index.where(
             df_rounded['balanceInThousands'] >= balance).dropna()[0])
         price = df.at[index, "price"]
