@@ -34,11 +34,11 @@ class BondingCurveInitializer:
     # Returns supply at a specific balance. THIS IS AN APPROXIMATION only meant for visualizing scenarios
     def get_supply(self, balance):
         supply_ref = 0
-        while self.get_balance(supply_ref) < balance:
+        while self.get_balance(supply_ref) <= balance:
             supply_ref = supply_ref + 10
 
-        # increase number of steps for higher precision, but with increased calculation time
-        df = self.curve_over_balance(supply_ref-10, supply_ref, 100000)
+        # increase number of steps for higher precision, but with increased calculation time. The -1 is to account for edge cases
+        df = self.curve_over_balance(supply_ref-11, supply_ref, 100000)
         df_rounded = df.round(3)
 
         index = int(df.index.where(
