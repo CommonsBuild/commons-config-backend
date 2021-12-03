@@ -41,6 +41,8 @@ class BondingCurveInitializer:
         df = self.curve_over_balance(supply_ref-10, supply_ref, 100000)
         df_rounded = df.round(3)
 
+        print(df_rounded.head())
+        print(balance)
         index = int(df.index.where(
             df_rounded['balanceInThousands'] >= balance).dropna()[0])
         price = df.at[index, "price"]
@@ -118,8 +120,8 @@ class BondingCurveHandler():
                  exit_tribute,
                  initial_buy,
                  steplist,
-                 virtual_supply=-1,
-                 virtual_balance=-1,
+                 virtual_supply=1,
+                 virtual_balance=1,
                  zoom_graph=0,
                  plot_mode=0,
                  include_milestones=0):
@@ -128,10 +130,10 @@ class BondingCurveHandler():
         ragequit_amount = ragequit_amount / 1000
         initial_buy = initial_buy / 1000
 
-        virtual_supply = TOTAL_INITIAL_TECH_SUPPLY if virtual_supply == - \
-            1 else (virtual_supply / 1000)
-        virtual_balance = TOTAL_HATCH_FUNDING if virtual_balance == - \
-            1 else (virtual_balance / 1000)
+        virtual_supply = TOTAL_INITIAL_TECH_SUPPLY if virtual_supply == 1 else (
+            virtual_supply / 1000)
+        virtual_balance = TOTAL_HATCH_FUNDING if virtual_balance == 1 else (
+            virtual_balance / 1000)
 
         # parse the steplist (which gets read as string) into the right format and scale the values
         steplist_parsed = []
