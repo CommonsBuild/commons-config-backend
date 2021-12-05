@@ -111,6 +111,7 @@ class IssueGeneratorModel:
             voting_period_days=self.conviction_voting.get(
                 "votingPeriodDays", ""),
             spending_limit=self.conviction_voting.get("spendingLimit", ""),
+            table_scenarios=self.conviction_voting.get("tableScenarios", [])
         )
         conviction_voting_output = conviction_voting_model.get_data().get("output", "")
         conviction_voting_table = conviction_voting_output.get("table", "")
@@ -126,6 +127,16 @@ class IssueGeneratorModel:
                 amount_out=abc_step_table["amountOutParsed"][idx],
                 new_price=abc_step_table["newPriceParsed"][idx],
                 price_slippage=abc_step_table["slippage"][idx]
+            )
+
+        formated_cv_steps = ""
+        for idx in range(len(conviction_voting_table['amountInCommonPool'])):
+            formated_cv_steps += "| {proposal} | {requested_amount[0]:,} | {amount_common_pool[0]:,} | {effective_supply[0]:,} | {min_tokens_pass[0]} |\n".format(
+                proposal=idx+1,
+                requested_amount=conviction_voting_table["requestedAmount"],
+                amount_common_pool=conviction_voting_table["amountInCommonPool"],
+                effective_supply=conviction_voting_table["totalEffectiveSupply"],
+                min_tokens_pass=conviction_voting_table["minTokensToPass"],
             )
 
         formated_advanced_settings_data = advanced_settings_data.format(
@@ -234,11 +245,7 @@ class IssueGeneratorModel:
             self.conviction_voting.get("minimumConviction", ""),
             relative_spending_limit=100 *
             self.conviction_voting.get("spendingLimit", ""),
-            effective_supply=conviction_voting_table["totalEffectiveSupply"],
-            requested_amount=conviction_voting_table["requestedAmount"],
-            amount_common_pool=conviction_voting_table["amountInCommonPool"],
-            min_tokens_pass=conviction_voting_table["minTokensToPass"],
-            tokens_pass_2_weeks=conviction_voting_table["tokensToPassIn2Weeks"],
+            cv_steps=formated_cv_steps, 
 
             has_advanced_settings="Yes" if self.advanced_settings else "No",
             advanced_settings_section=formated_advanced_settings_data if self.advanced_settings else "",

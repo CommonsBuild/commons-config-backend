@@ -194,12 +194,7 @@ We're very bullish on TEC so we provide the BUY scenario at launch to compare pr
 ### Data
 | Proposal  | Requested Amount (wxDAI) | Common Pool (wxDAI)       | Effective supply (TEC)  | Tokens Needed To Pass (TEC) |
 |:---------:|:------------------------:|:-------------------------:|:-----------------------:|:---------------------------:|
-|     1     | {requested_amount[0]:,}  | {amount_common_pool[0]:,} | {effective_supply[0]:,} | {min_tokens_pass[0]}        |
-|     2     | {requested_amount[1]:,}  | {amount_common_pool[1]:,} | {effective_supply[1]:,} | {min_tokens_pass[1]}        |
-|     3     | {requested_amount[2]:,}  | {amount_common_pool[2]:,} | {effective_supply[2]:,} | {min_tokens_pass[2]}        |
-|     4     | {requested_amount[3]:,}  | {amount_common_pool[3]:,} | {effective_supply[3]:,} | {min_tokens_pass[3]}        |
-|     5     | {requested_amount[4]:,}  | {amount_common_pool[4]:,} | {effective_supply[4]:,} | {min_tokens_pass[4]}        |
-|     6     | {requested_amount[5]:,}  | {amount_common_pool[5]:,} | {effective_supply[5]:,} | {min_tokens_pass[5]}        |
+{cv_steps}
 
 - **Conviction Growth**: **{conviction_growth_days} day(s)**, meaning that voting power will increase by 50% every {conviction_growth_days} days that they are staked behind a proposal, so after {double_conviction_growth_days} days, a voters voting power will have reached 75% of it's maximum capacity.
 - **Minimum Conviction**: **{minimum_conviction}%**, this means that to pass any funding request it will take at least {minimum_conviction}% of the actively voting TEC tokens.
