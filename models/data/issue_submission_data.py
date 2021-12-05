@@ -106,8 +106,8 @@ issue_data = """
 >The ABC mints and burns TEC tokens, the price of the TEC token is dependent on the funds that is held in the Reserve. This graph shows how the ABC's Price for TEC tokens changes with the ABC's Reserve Balance. The Initial Buy that will happen at launch is highlighted.
 
 ### Data
-| Step #             | Current Price      | Amount In      | Tribute Collected      | Amount Out      | New Price      | Price Slippage      |
-| ------------------ | ------------------ | -------------- | ---------------------- | --------------- | -------------- | ------------------- |
+| Tx | Reserve | Total Supply | Price | Amount In | Tribute | Amount Out | New Price  | Price Slippage |
+|:--:|:-------:|:------------:|:-----:|:---------:|:-------:|:----------:|:----------:|:--------------:|
 {abc_steps}
 
 #### NOTE: 
@@ -116,7 +116,7 @@ We're very bullish on TEC so we provide the BUY scenario at launch to compare pr
 ### [FORK THIS PROPOSAL](http://config.tecommons.org/config/import/{issue_number}) (link)
 
 | Allocation of Funds              | wxDAI                    |
-|----------------------------------|--------------------------|
+|:--------------------------------:|:------------------------:|
 | Common Pool (Before Initial Buy) | {common_pool_before}     |
 | Reserve (Before Initial Buy)     | {reserve_balance_before} |
 | Common Pool (After Initial Buy)  | {common_pool_after}      |

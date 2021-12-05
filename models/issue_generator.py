@@ -119,8 +119,10 @@ class IssueGeneratorModel:
         formated_abc_steps = ""
         abc_step_table = augmented_bonding_curve_output["stepTable"]
         for idx in range(len(abc_step_table['step'])):
-            formated_abc_steps += "| **Step {step}** | {current_price} | {amount_in} | {tribute_collected} | {amount_out} | {new_price} | {price_slippage} |\n".format(
-                step=abc_step_table["step"][idx],
+            formated_abc_steps += "|{tx} |{reserve} |{total_supply} |{current_price} |{amount_in} |{tribute_collected} |{amount_out} |{new_price} |{price_slippage} |\n".format(
+                tx=abc_step_table["step"][idx],
+                reserve=abc_step_table["currentBalanceParsed"][idx],
+                total_supply=abc_step_table["currentSupplyParsed"][idx],
                 current_price=abc_step_table["currentPriceParsed"][idx],
                 amount_in=abc_step_table["amountInParsed"][idx]["amount"] + " " + abc_step_table["amountInParsed"][idx]["currency"],
                 tribute_collected=abc_step_table["tributeCollectedParsed"][idx],
