@@ -206,7 +206,7 @@ class ConvictionVoting(Resource):
         parser.add_argument('spendingLimit', type=float)
         parser.add_argument('minimumConviction', type=float)
         parser.add_argument('convictionGrowth', type=int)
-        parser.add_argument('convictionVotingPeriodDays', type=int)
+        parser.add_argument('convictionVotingPeriodDays', type=float)
         parser.add_argument('tableScenarios', type=list, action='append')
         parameters = parser.parse_args()
         spending_limit = parameters['spendingLimit']

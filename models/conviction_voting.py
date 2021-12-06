@@ -132,20 +132,21 @@ class ConvictionVotingModel:
         for idx in range(len_scenarios):
             percentage_requested = scenarios['requestedAmount'][idx] / scenarios['amountInCommonPool'][idx]
             percentage_requested_threshold = self.get_threshold(percentage_requested)
-            if math.isinf(percentage_requested_threshold) or (self.get_threshold(percentage_requested) > 1):
+            percentage_requested_selected_period = self.current_conviction_pergentage_of_max(time=self.voting_period_days)
+            if math.isinf(percentage_requested_threshold) or (percentage_requested_threshold/percentage_requested_selected_period > 1):
                 scenarios['minTokensToPass'].append('Not possible')
                 scenarios['tokensToPassIn2Weeks'].append('Not possible')
             else:
                 scenarios['minTokensToPass'].append(
                     int(
                         scenarios['totalEffectiveSupply'][idx] *
-                        self.get_threshold(percentage_requested)
+                        percentage_requested_threshold
                     )
                 )
                 scenarios['tokensToPassIn2Weeks'].append(
                     int(
                         scenarios['minTokensToPass'][idx] / 
-                        self.current_conviction_pergentage_of_max(time=self.voting_period_days)
+                        percentage_requested_selected_period
                     )
                 )
             self.output_dict['output']['table'] = scenarios
