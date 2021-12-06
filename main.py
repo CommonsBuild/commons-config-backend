@@ -103,9 +103,9 @@ class AugmentedBondingCurve(Resource):
         steplist = parameters['stepList'] if parameters['stepList'] is not None else [
         ]
         virtual_supply = float(
-            parameters['virtualSupply']) if parameters['virtualSupply'] is not None else -1
+            parameters['virtualSupply']) if parameters['virtualSupply'] is not None else 1
         virtual_balance = float(
-            parameters['virtualBalance']) if parameters['virtualBalance'] is not None else -1
+            parameters['virtualBalance']) if parameters['virtualBalance'] is not None else 1
         zoom_graph = int(
             parameters['zoomGraph']) if parameters['zoomGraph'] is not None else 0
         include_milestones = int(
@@ -177,9 +177,9 @@ class IssueGenerator(Resource):
         abc['stepList'].insert(1, "[100000, 'wxDAI']")
         abc['stepList'].insert(2, "[3000, 'TEC']")
         abc['virtualSupply'] = float(
-            abc['virtualSupply']) if abc['virtualSupply'] is not None else -1
+            abc['virtualSupply']) if abc['virtualSupply'] is not None else 1
         abc['virtualBalance'] = float(
-            abc['virtualBalance']) if abc['virtualBalance'] is not None else -1
+            abc['virtualBalance']) if abc['virtualBalance'] is not None else 1
         abc['zoomGraph'] = int(
             abc['zoomGraph']) if abc['zoomGraph'] is not None else 0
         # added the milestone generation for the issue generator
