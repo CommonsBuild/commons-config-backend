@@ -475,7 +475,8 @@ class BondingCurveHandler():
             price_list.append(bCurve.get_price(sup))
 
         table_data = {"balance": [i * 1000 for i in balance_list],
-                      "supply": [i * 1000 for i in supply_list], "price": price_list}
+                      "supply": [i * 1000 for i in supply_list], "price": price_list,
+                      "mktCap": [supply_list[i] * price_list[i]*1000 for i in range(len(supply_list))]}
 
         # print(table_data)
 
