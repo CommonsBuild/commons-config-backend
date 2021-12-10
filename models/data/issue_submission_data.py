@@ -106,7 +106,7 @@ issue_data = """
 >The ABC mints and burns TEC tokens, the price of the TEC token is dependent on the funds that is held in the Reserve. This graph shows how the ABC's Price for TEC tokens changes with the ABC's Reserve Balance. The Initial Buy that will happen at launch is highlighted.
 
 ### Data
-| Tx | Reserve | Total Supply | Price | Amount In | Tribute | Amount Out | New Price  | Price Slippage |
+| Tx | Reserve | Total Supply | Price | Amount In | Tribute | Amount Out | New Price  | Slippage |
 |:--:|:-------:|:------------:|:-----:|:---------:|:-------:|:----------:|:----------:|:--------------:|
 {abc_steps}
 
