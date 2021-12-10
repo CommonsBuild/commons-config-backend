@@ -133,12 +133,12 @@ class IssueGeneratorModel:
 
         formated_cv_steps = ""
         for idx in range(len(conviction_voting_table['amountInCommonPool'])):
-            formated_cv_steps += "| {proposal} | {requested_amount[0]:,} | {amount_common_pool[0]:,} | {effective_supply[0]:,} | {min_tokens_pass[0]} |\n".format(
+            formated_cv_steps += "| {proposal} | {requested_amount:,} | {amount_common_pool:,} | {effective_supply:,} | {min_tokens_pass} |\n".format(
                 proposal=idx+1,
-                requested_amount=conviction_voting_table["requestedAmount"],
-                amount_common_pool=conviction_voting_table["amountInCommonPool"],
-                effective_supply=conviction_voting_table["totalEffectiveSupply"],
-                min_tokens_pass=conviction_voting_table["minTokensToPass"],
+                requested_amount=conviction_voting_table["requestedAmount"][idx],
+                amount_common_pool=conviction_voting_table["amountInCommonPool"][idx],
+                effective_supply=conviction_voting_table["totalEffectiveSupply"][idx],
+                min_tokens_pass=conviction_voting_table["minTokensToPass"][idx],
             )
 
         formated_advanced_settings_data = advanced_settings_data.format(
