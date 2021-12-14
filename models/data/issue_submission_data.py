@@ -1,5 +1,5 @@
 advanced_settings_data = """
-### *Advanced Settings 
+# Advanced Settings* 
 
 | Parameter               | Value                       |
 |:-----------------------:|:---------------------------:|
@@ -28,6 +28,8 @@ issue_data = """
 ## What is the overall Commons Configuration strategy? 
 {overall_strategy}
 
+![image](https://user-images.githubusercontent.com/67759413/143617371-33357775-ff6a-4add-87c3-f58e05cc2f6a.png)
+
 #### Advanced Settings Modified? {has_advanced_settings}
 
 ### [FORK THIS PROPOSAL](http://config.tecommons.org/config/import/{issue_number}) (link)
@@ -47,7 +49,7 @@ issue_data = """
 | ---------------- | ------------------ |
 | Commons Tribute  | {commons_tribute}% |
 | Entry Tribute    | {entry_tribute}%   |
-| Exit Tribute     | {exit_tribute}% |
+| Exit Tribute     | {exit_tribute}%    |
 | *_Reserve Ratio_ | {reserve_ratio}%   |
 
 *This is an output. [Learn more about the Reserve Ratio here](https://forum.tecommons.org/t/augmented-bonding-curve-opening-price-reserve-ratio/516).
@@ -58,11 +60,11 @@ issue_data = """
 | ----------------------- | ------------------------------------ |
 | Support Required        | {support_required}%                  |
 | Minimum Quorum          | {minimum_quorum}%                    |
-| Vote Duration           | {vote_duration_days} day(s)         |
+| Vote Duration           | {vote_duration_days} day(s)          |
 | Delegated Voting Period | {delegated_voting_days} day(s)       |
 | Quiet Ending Period     | {quiet_ending_days} day(s)           |
 | Quiet Ending Extension  | {quiet_ending_extension_days} day(s) |
-| Execution Delay         | {execution_delay_days} day(s)       |
+| Execution Delay         | {execution_delay_days} day(s)        |
 
 
 ### Module 4: Conviction Voting
@@ -75,11 +77,20 @@ issue_data = """
 
 # Module 1: Token Freeze and Token Thaw
 
+### Strategy:
+{token_lockup_strategy}
+
+| Parameter     | Value                       |
+| ------------- | --------------------------- |
+| Token Freeze  | {token_freeze_period} Weeks |
+| Token Thaw    | {token_thaw_period} Weeks   |
+| Opening Price | {opening_price} wxDAI       |
+
 ### Hatcher's TEC Release Schedule 
 ![]({token_lockup_image})
 >This is the release schedule for TEC that was given to Hatchers. Their TEC will start out frozen and then slowly become liquid according to the graph above.
 
-### Data
+### Token Release Timeline
 | Duration                  | % of Tokens Released  | Price Floor of Token   |
 | ------------------------- | --------------------- | ---------------------- |
 | 3 months                  | {tokens_released[0]}% | {price_floor[0]} wxDAI |
@@ -92,28 +103,19 @@ issue_data = """
 | 4 years                   | {tokens_released[7]}% | {price_floor[7]} wxDAI |
 | 5 years                   | {tokens_released[8]}% | {price_floor[8]} wxDAI |
 
-- **Token Freeze**: **{token_freeze_period} weeks**, meaning that 100% of TEC tokens minted for Hatchers will remain locked from being sold or transferred for {token_freeze_period} weeks. They can still be used to vote while frozen.
-- **Token Thaw**: **{token_thaw_period} weeks**, meaning the Hatchers frozen tokens will start to become transferable at a steady rate starting at the end of Token Freeze and ending {token_thaw_period} weeks later.
-- **Opening Price**: **{opening_price} wxDAI**, meaning for the initial buy, the first TEC minted by the Augmented Bonding Curve will be priced at {opening_price} wxDAI making it the price floor during the Token Freeze. 
-
-### Strategy:
-{token_lockup_strategy}
-
 # Module 2: Augmented Bonding Curve (ABC)
 
-### TEC Price vs ABC Reserve Holdings
-![]({abc_image})
->The ABC mints and burns TEC tokens, the price of the TEC token is dependent on the funds that is held in the Reserve. This graph shows how the ABC's Price for TEC tokens changes with the ABC's Reserve Balance. The Initial Buy that will happen at launch is highlighted.
+### Strategy:
+{abc_strategy}
 
-### Data
-| Tx | Reserve | Total Supply | Price | Amount In | Tribute | Amount Out | New Price  | Slippage |
-|:--:|:-------:|:------------:|:-----:|:---------:|:-------:|:----------:|:----------:|:--------------:|
-{abc_steps}
+| Parameter        | Value              |
+| ---------------- | ------------------ |
+| Commons Tribute  | {commons_tribute}% |
+| Entry Tribute    | {entry_tribute}%   |
+| Exit Tribute     | {exit_tribute}%    |
+| *_Reserve Ratio_ | {reserve_ratio}%   |
 
-#### NOTE: 
-We're very bullish on TEC so we provide the BUY scenario at launch to compare proposals... to explore this proposal's ABC further Click the link  below to see their parameters in your dashboard, be warned this will clear any data you have in your dashboard: 
-
-### [FORK THIS PROPOSAL](http://config.tecommons.org/config/import/{issue_number}) (link)
+*This is an output. [Learn more about the Reserve Ratio here](https://forum.tecommons.org/t/augmented-bonding-curve-opening-price-reserve-ratio/516).
 
 | Allocation of Funds              | wxDAI                    |
 |:--------------------------------:|:------------------------:|
@@ -122,8 +124,16 @@ We're very bullish on TEC so we provide the BUY scenario at launch to compare pr
 | Common Pool (After Initial Buy)  | {common_pool_after}      |
 | Reserve (After Initial Buy)      | {reserve_balance_after}  |
 
-## ABC Configuration Table
+### TEC Price vs ABC Reserve Holdings
+![]({abc_image})
+>The ABC mints and burns TEC tokens, the price of the TEC token is dependent on the funds that is held in the Reserve. This graph shows how the ABC's Price for TEC tokens changes with the ABC's Reserve Balance. The Initial Buy that will happen at launch is highlighted.
 
+### Example Transaction Data
+| Tx | Reserve | Total Supply | Price | Amount In | Tribute | Amount Out | New Price  | Slippage |
+|:--:|:-------:|:------------:|:-----:|:---------:|:-------:|:----------:|:----------:|:--------:|
+{abc_steps}
+
+### ABC Overview
 | Reserve (wxDai)     | Supply (TEC)       | Price (wxDai/TEC) |
 |:-------------------:|:------------------:|:-----------------:|
 | {abc_reserve[0]:,}  | {abc_supply[0]:,.0f}  | {abc_price[0]:,.2f}  |
@@ -154,56 +164,79 @@ We're very bullish on TEC so we provide the BUY scenario at launch to compare pr
 | {abc_reserve[25]:,} | {abc_supply[25]:,.0f} | {abc_price[25]:,.2f} |
 | {abc_reserve[26]:,} | {abc_supply[26]:,.0f} | {abc_price[26]:,.2f} |
 
-- **Commons Tribute**: **{commons_tribute}%**, which means that {commons_tribute}% of the Hatch funds ({common_pool_before} wxDAI)  will go to the Common Pool and {commons_tribute_remainder}% ({reserve_balance_before} wxDAI) will go to the ABC's Reserve.
-- **Entry Tribute**: **{entry_tribute}%** meaning that from every **BUY** order on the ABC, {entry_tribute}% of the order value in wxDAI is subtracted and sent to the Common Pool.
-- **Exit Tribute**: **{exit_tribute}%** meaning that from every **SELL** order on the ABC, {exit_tribute}% of the order value in wxDAI is subtracted and sent to the Common Pool. 
+# Module 3: Tao Voting
 
 ### Strategy:
-{abc_strategy}
+{tao_voting_strategy}
 
-# Module 3: Tao Voting
+| Parameter               | Value                                |
+| ----------------------- | ------------------------------------ |
+| Support Required        | {support_required}%                  |
+| Minimum Quorum          | {minimum_quorum}%                    |
+| Vote Duration           | {vote_duration_days} day(s)          |
+| Delegated Voting Period | {delegated_voting_days} day(s)       |
+| Quiet Ending Period     | {quiet_ending_days} day(s)           |
+| Quiet Ending Extension  | {quiet_ending_extension_days} day(s) |
+| Execution Delay         | {execution_delay_days} day(s)        |
 
 ### Tao Voting Timeline From Proposal To Execution
 ![]({tao_voting_image})
 >This shows how the timeline stacks up for yes/no time based votes that can change the configuration after launch.
 
-### Data
+### Timeline Data
 |# of Quiet Ending Extensions                 | No Extensions                         | With 1 Extension                                  | With 2 Extensions                                  |
 | ------------------------------------------- | ------------------------------------- | ------------------------------------------------- | -------------------------------------------------- |
 | **Time to Vote on Proposals**               | {vote_duration_days} days             | {vote_duration_days_1_extension} days             | {vote_duration_days_2_extensions} days             |
 | **Time to Review a Delegates Vote**         | {review_duration_days} days           | {review_duration_days_1_extension} days           | {review_duration_days_2_extensions} days           |
 | **Time to Execute a Passing Proposal**      | {execute_proposal_duration_days} days | {execute_proposal_duration_days_1_extension} days | {execute_proposal_duration_days_2_extensions} days |
 
+# Module 4: Conviction Voting
+
+###  Strategy: 
+{conviction_voting_strategy}
+
+| Parameter          | Value                           |
+| ------------------ | ------------------------------- |
+| Conviction Growth  | {conviction_growth_days} day(s) |
+| Minimum Conviction | {minimum_conviction}%           |
+| Spending Limit     | {relative_spending_limit}%      |
+
+### Minimum Percent of Voting Tokens Needed to Pass Funding Requests
+![]({conviction_voting_image})
+>This shows how the minimum percent of tokens needed to pass proposals after 2 weeks varies with the percent of the Common Pool funds being requested.
+
+### Example Funding Request Data
+| Proposal  | Requested Amount (wxDAI) | Common Pool (wxDAI)       | Effective supply (TEC)  | Tokens Needed To Pass (TEC) |
+|:---------:|:------------------------:|:-------------------------:|:-----------------------:|:---------------------------:|
+{cv_steps}
+
+### [FORK THIS PROPOSAL](http://config.tecommons.org/config/import/{issue_number}) (link)
+
+# Parameter Definitions
+
+### Token Freeze and Token Thaw 
+- **Token Freeze**: **{token_freeze_period} weeks**, meaning that 100% of TEC tokens minted for Hatchers will remain locked from being sold or transferred for {token_freeze_period} weeks. They can still be used to vote while frozen.
+- **Token Thaw**: **{token_thaw_period} weeks**, meaning the Hatchers frozen tokens will start to become transferable at a steady rate starting at the end of Token Freeze and ending {token_thaw_period} weeks later.
+- **Opening Price**: **{opening_price} wxDAI**, meaning for the initial buy, the first TEC minted by the Augmented Bonding Curve will be priced at {opening_price} wxDAI making it the price floor during the Token Freeze. 
+
+### Augmented Bonding Curve (ABC)
+- **Commons Tribute**: **{commons_tribute}%**, which means that {commons_tribute}% of the Hatch funds ({common_pool_before} wxDAI)  will go to the Common Pool and {commons_tribute_remainder}% ({reserve_balance_before} wxDAI) will go to the ABC's Reserve.
+- **Entry Tribute**: **{entry_tribute}%** meaning that from every **BUY** order on the ABC, {entry_tribute}% of the order value in wxDAI is subtracted and sent to the Common Pool.
+- **Exit Tribute**: **{exit_tribute}%** meaning that from every **SELL** order on the ABC, {exit_tribute}% of the order value in wxDAI is subtracted and sent to the Common Pool. 
+
+### Tao Voting
 - **Support Required**: **{support_required}%**, which means {support_required}% of all votes must be in favor of a proposal for it to pass.
 - **Minimum Quorum**: **{minimum_quorum}%**, meaning that {minimum_quorum}% of all tokens need to have voted on a proposal in order for it to become valid.
 - **Vote Duration**: **{vote_duration_days} day(s)**, meaning that eligible voters will have {vote_duration_days} day(s) to vote on a proposal. 
 - **Delegated Voting Period** is set for **{delegated_voting_days} day(s)**, meaning that Delegates will have {delegated_voting_days} day(s) to use their delegated voting power to vote on a proposal. 
 - **Quiet Ending Period**: **{quiet_ending_days} day(s)**, this means that {quiet_ending_days} day(s) before the end of the Vote Duration, if the vote outcome changes, the Quiet Ending Extension will be triggered. 
 - **Quiet Ending Extension**: **{quiet_ending_extension_days} day(s)**, meaning that if the vote outcome changes during the Quiet Ending Period, an additional {quiet_ending_extension_days} day(s) will be added for voting.
-- **Execution Delay**: **{execution_delay_days} day(s)**, meaning that there is an {execution_delay_days} day delay after the vote is passed before the proposed action is executed.  
+- **Execution Delay**: **{execution_delay_days} day(s)**, meaning that there is an {execution_delay_days} day delay after the vote is passed before the proposed action is executed.
 
-### Strategy:
-{tao_voting_strategy}
-
-# Module 4: Conviction Voting
-
-### Minimum Percent of Voting Tokens Needed to Pass Funding Requests
-![]({conviction_voting_image})
->This shows how the minimum percent of tokens needed to pass proposals after 2 weeks varies with the percent of the Common Pool funds being requested.
-
-### Data
-| Proposal  | Requested Amount (wxDAI) | Common Pool (wxDAI)       | Effective supply (TEC)  | Tokens Needed To Pass (TEC) |
-|:---------:|:------------------------:|:-------------------------:|:-----------------------:|:---------------------------:|
-{cv_steps}
-
+### Conviction Voting
 - **Conviction Growth**: **{conviction_growth_days} day(s)**, meaning that voting power will increase by 50% every {conviction_growth_days} days that they are staked behind a proposal, so after {double_conviction_growth_days} days, a voters voting power will have reached 75% of it's maximum capacity.
 - **Minimum Conviction**: **{minimum_conviction}%**, this means that to pass any funding request it will take at least {minimum_conviction}% of the actively voting TEC tokens.
 - The **Spending Limit**: **{relative_spending_limit}%**, which means that no more than {relative_spending_limit}% of the total funds in the Common Pool can be funded by a single proposal.
-
-###  Strategy: 
-{conviction_voting_strategy}
-
-### [FORK THIS PROPOSAL](http://config.tecommons.org/config/import/{issue_number}) (link)
 
 {advanced_settings_section}
 """
