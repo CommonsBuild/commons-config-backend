@@ -210,7 +210,7 @@ class IssueGeneratorModel:
             abc_price=augmented_bonding_curve_output["milestoneTable"].get(
                 "price", ""),
             mkt_cap=augmented_bonding_curve_output["milestoneTable"].get(
-                "price", ""),
+                "mktCap", ""),
 
             tao_voting_strategy=self.tao_voting.get("strategy", ""),
             support_required=self.tao_voting.get("supportRequired", ""),
