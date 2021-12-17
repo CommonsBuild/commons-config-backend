@@ -304,6 +304,6 @@ class IssueGeneratorModel:
 
         if r.status_code == 201:
             issue_number = r.json().get("number", "")
-            self.save_parameters_database(issue_number=issue_number)
+            #self.save_parameters_database(issue_number=issue_number)
 
         return {"status": r.status_code, "url": r.json().get("html_url", "")}
