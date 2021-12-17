@@ -295,15 +295,15 @@ class IssueGeneratorModel:
         headers = {'Content-Type': 'application/json',
                    'Authorization': PARAMS_BOT_AUTH_TOKEN}
         r_issue_data = requests.get(
-            'https://api.github.com/search/issues?q=repo:CommonsBuild/commons-config-proposals')
+            'https://api.github.com/search/issues?q=repo:CommonsBuild/tec-config-proposals-update')
         self.issue_number = 2 + r_issue_data.json().get("total_count", "")
         data = {"title": self.title, "body": self.format_output_issue()}
 
-        r = requests.post('https://api.github.com/repos/CommonsBuild/commons-config-proposals/issues',
+        r = requests.post('https://api.github.com/repos/CommonsBuild/tec-config-proposals-update/issues',
                           data=json.dumps(data), headers=headers)
 
         if r.status_code == 201:
             issue_number = r.json().get("number", "")
-            self.save_parameters_database(issue_number=issue_number)
+            #self.save_parameters_database(issue_number=issue_number)
 
         return {"status": r.status_code, "url": r.json().get("html_url", "")}
