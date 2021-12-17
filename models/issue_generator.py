@@ -209,6 +209,8 @@ class IssueGeneratorModel:
                 "supply", ""),
             abc_price=augmented_bonding_curve_output["milestoneTable"].get(
                 "price", ""),
+            mkt_cap=augmented_bonding_curve_output["milestoneTable"].get(
+                "price", ""),
 
             tao_voting_strategy=self.tao_voting.get("strategy", ""),
             support_required=self.tao_voting.get("supportRequired", ""),
@@ -249,7 +251,6 @@ class IssueGeneratorModel:
             self.conviction_voting.get("spendingLimit", ""),
             cv_steps=formated_cv_steps, 
 
-            has_advanced_settings="Yes" if self.advanced_settings else "No",
             advanced_settings_section=formated_advanced_settings_data if self.advanced_settings else "",
             token_lockup_image=self.save_images_database(
                 self.image_files['tokenLockup']),
@@ -294,11 +295,11 @@ class IssueGeneratorModel:
         headers = {'Content-Type': 'application/json',
                    'Authorization': PARAMS_BOT_AUTH_TOKEN}
         r_issue_data = requests.get(
-            'https://api.github.com/search/issues?q=repo:CommonsBuild/commons-config-proposals')
+            'https://api.github.com/search/issues?q=repo:CommonsBuild/tec-config-proposals-update')
         self.issue_number = 2 + r_issue_data.json().get("total_count", "")
         data = {"title": self.title, "body": self.format_output_issue()}
 
-        r = requests.post('https://api.github.com/repos/CommonsBuild/commons-config-proposals/issues',
+        r = requests.post('https://api.github.com/repos/CommonsBuild/tec-config-proposals-update/issues',
                           data=json.dumps(data), headers=headers)
 
         if r.status_code == 201:

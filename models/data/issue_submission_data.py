@@ -28,9 +28,6 @@ issue_data = """
 ## What is the overall Commons Configuration strategy? 
 {overall_strategy}
 
-![image](https://user-images.githubusercontent.com/67759413/143617371-33357775-ff6a-4add-87c3-f58e05cc2f6a.png)
-
-#### Advanced Settings Modified? {has_advanced_settings}
 
 ### [FORK THIS PROPOSAL](http://config.tecommons.org/config/import/{issue_number}) (link)
 
@@ -134,35 +131,35 @@ issue_data = """
 {abc_steps}
 
 ### ABC Overview
-| Reserve (wxDai)     | Supply (TEC)       | Price (wxDai/TEC) |
-|:-------------------:|:------------------:|:-----------------:|
-| {abc_reserve[0]:,}  | {abc_supply[0]:,.0f}  | {abc_price[0]:,.2f}  |
-| {abc_reserve[1]:,}  | {abc_supply[1]:,.0f}  | {abc_price[1]:,.2f}  |
-| {abc_reserve[2]:,}  | {abc_supply[2]:,.0f}  | {abc_price[2]:,.2f}  |
-| {abc_reserve[3]:,}  | {abc_supply[3]:,.0f}  | {abc_price[3]:,.2f}  |
-| {abc_reserve[4]:,}  | {abc_supply[4]:,.0f}  | {abc_price[4]:,.2f}  |
-| {abc_reserve[5]:,}  | {abc_supply[5]:,.0f}  | {abc_price[5]:,.2f}  |
-| {abc_reserve[6]:,}  | {abc_supply[6]:,.0f}  | {abc_price[6]:,.2f}  |
-| {abc_reserve[7]:,}  | {abc_supply[7]:,.0f}  | {abc_price[7]:,.2f}  |
-| {abc_reserve[8]:,}  | {abc_supply[8]:,.0f}  | {abc_price[8]:,.2f}  |
-| {abc_reserve[9]:,}  | {abc_supply[9]:,.0f}  | {abc_price[9]:,.2f}  |
-| {abc_reserve[10]:,} | {abc_supply[10]:,.0f} | {abc_price[10]:,.2f} |
-| {abc_reserve[11]:,} | {abc_supply[11]:,.0f} | {abc_price[11]:,.2f} |
-| {abc_reserve[12]:,} | {abc_supply[12]:,.0f} | {abc_price[12]:,.2f} |
-| {abc_reserve[13]:,} | {abc_supply[13]:,.0f} | {abc_price[13]:,.2f} |
-| {abc_reserve[14]:,} | {abc_supply[14]:,.0f} | {abc_price[14]:,.2f} |
-| {abc_reserve[15]:,} | {abc_supply[15]:,.0f} | {abc_price[15]:,.2f} |
-| {abc_reserve[16]:,} | {abc_supply[16]:,.0f} | {abc_price[16]:,.2f} |
-| {abc_reserve[17]:,} | {abc_supply[17]:,.0f} | {abc_price[17]:,.2f} |
-| {abc_reserve[18]:,} | {abc_supply[18]:,.0f} | {abc_price[18]:,.2f} |
-| {abc_reserve[19]:,} | {abc_supply[19]:,.0f} | {abc_price[19]:,.2f} |
-| {abc_reserve[20]:,} | {abc_supply[20]:,.0f} | {abc_price[20]:,.2f} |
-| {abc_reserve[21]:,} | {abc_supply[21]:,.0f} | {abc_price[21]:,.2f} |
-| {abc_reserve[22]:,} | {abc_supply[22]:,.0f} | {abc_price[22]:,.2f} |
-| {abc_reserve[23]:,} | {abc_supply[23]:,.0f} | {abc_price[23]:,.2f} |
-| {abc_reserve[24]:,} | {abc_supply[24]:,.0f} | {abc_price[24]:,.2f} |
-| {abc_reserve[25]:,} | {abc_supply[25]:,.0f} | {abc_price[25]:,.2f} |
-| {abc_reserve[26]:,} | {abc_supply[26]:,.0f} | {abc_price[26]:,.2f} |
+| Reserve (wxDai)     | Supply (TEC)          | Price (wxDai/TEC)    | Market cap        |
+|:-------------------:|:---------------------:|:--------------------:|:-----------------:|
+| {abc_reserve[0]:,}  | {abc_supply[0]:,.0f}  | {abc_price[0]:,.2f}  | {mkt_cap[0]:,.2f}  |
+| {abc_reserve[1]:,}  | {abc_supply[1]:,.0f}  | {abc_price[1]:,.2f}  | {mkt_cap[1]:,.2f}  |
+| {abc_reserve[2]:,}  | {abc_supply[2]:,.0f}  | {abc_price[2]:,.2f}  | {mkt_cap[2]:,.2f}  |
+| {abc_reserve[3]:,}  | {abc_supply[3]:,.0f}  | {abc_price[3]:,.2f}  | {mkt_cap[3]:,.2f}  |
+| {abc_reserve[4]:,}  | {abc_supply[4]:,.0f}  | {abc_price[4]:,.2f}  | {mkt_cap[4]:,.2f}  |
+| {abc_reserve[5]:,}  | {abc_supply[5]:,.0f}  | {abc_price[5]:,.2f}  | {mkt_cap[5]:,.2f}  |
+| {abc_reserve[6]:,}  | {abc_supply[6]:,.0f}  | {abc_price[6]:,.2f}  | {mkt_cap[6]:,.2f}  |
+| {abc_reserve[7]:,}  | {abc_supply[7]:,.0f}  | {abc_price[7]:,.2f}  | {mkt_cap[7]:,.2f}  |
+| {abc_reserve[8]:,}  | {abc_supply[8]:,.0f}  | {abc_price[8]:,.2f}  | {mkt_cap[8]:,.2f}  |
+| {abc_reserve[9]:,}  | {abc_supply[9]:,.0f}  | {abc_price[9]:,.2f}  | {mkt_cap[9]:,.2f}  |
+| {abc_reserve[10]:,} | {abc_supply[10]:,.0f} | {abc_price[10]:,.2f} | {mkt_cap[10]:,.2f} |
+| {abc_reserve[11]:,} | {abc_supply[11]:,.0f} | {abc_price[11]:,.2f} | {mkt_cap[11]:,.2f} |
+| {abc_reserve[12]:,} | {abc_supply[12]:,.0f} | {abc_price[12]:,.2f} | {mkt_cap[12]:,.2f} |
+| {abc_reserve[13]:,} | {abc_supply[13]:,.0f} | {abc_price[13]:,.2f} | {mkt_cap[13]:,.2f} |
+| {abc_reserve[14]:,} | {abc_supply[14]:,.0f} | {abc_price[14]:,.2f} | {mkt_cap[14]:,.2f} |
+| {abc_reserve[15]:,} | {abc_supply[15]:,.0f} | {abc_price[15]:,.2f} | {mkt_cap[15]:,.2f} |
+| {abc_reserve[16]:,} | {abc_supply[16]:,.0f} | {abc_price[16]:,.2f} | {mkt_cap[16]:,.2f} |
+| {abc_reserve[17]:,} | {abc_supply[17]:,.0f} | {abc_price[17]:,.2f} | {mkt_cap[17]:,.2f} |
+| {abc_reserve[18]:,} | {abc_supply[18]:,.0f} | {abc_price[18]:,.2f} | {mkt_cap[18]:,.2f} |
+| {abc_reserve[19]:,} | {abc_supply[19]:,.0f} | {abc_price[19]:,.2f} | {mkt_cap[19]:,.2f} |
+| {abc_reserve[20]:,} | {abc_supply[20]:,.0f} | {abc_price[20]:,.2f} | {mkt_cap[20]:,.2f} |
+| {abc_reserve[21]:,} | {abc_supply[21]:,.0f} | {abc_price[21]:,.2f} | {mkt_cap[21]:,.2f} |
+| {abc_reserve[22]:,} | {abc_supply[22]:,.0f} | {abc_price[22]:,.2f} | {mkt_cap[22]:,.2f} |
+| {abc_reserve[23]:,} | {abc_supply[23]:,.0f} | {abc_price[23]:,.2f} | {mkt_cap[23]:,.2f} |
+| {abc_reserve[24]:,} | {abc_supply[24]:,.0f} | {abc_price[24]:,.2f} | {mkt_cap[24]:,.2f} |
+| {abc_reserve[25]:,} | {abc_supply[25]:,.0f} | {abc_price[25]:,.2f} | {mkt_cap[25]:,.2f} |
+| {abc_reserve[26]:,} | {abc_supply[26]:,.0f} | {abc_price[26]:,.2f} | {mkt_cap[26]:,.2f} |
 
 # Module 3: Tao Voting
 
