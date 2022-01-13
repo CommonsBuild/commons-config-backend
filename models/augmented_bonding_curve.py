@@ -5,7 +5,7 @@ import numpy as np
 
 # These numbers are fixed from the hatch results (all in thousands except the token price)
 TOTAL_HATCH_FUNDING = 1571.22357
-TOTAL_INITIAL_TECH_SUPPLY = 2035.918945
+TOTAL_INITIAL_TECH_SUPPLY = 2040.16358
 HATCH_FINAL_TECH_PRICE = 0.754743
 
 
