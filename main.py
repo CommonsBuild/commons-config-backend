@@ -87,6 +87,9 @@ class AugmentedBondingCurve(Resource):
         parser.add_argument('virtualBalance', type=str)
         parser.add_argument('zoomGraph', type=str)
         parser.add_argument('includeMilestones', type=str)
+        parser.add_argument('totalHatchFunding', type=str)
+        parser.add_argument('totalInitialTechSupply', type=str)
+        parser.add_argument('hatchFinalTechPrice', type=str)
         parameters = parser.parse_args()
         commons_percentage = float(
             parameters['commonsTribute']) if parameters['commonsTribute'] is not None else 0.05
@@ -110,6 +113,12 @@ class AugmentedBondingCurve(Resource):
             parameters['zoomGraph']) if parameters['zoomGraph'] is not None else 0
         include_milestones = int(
             parameters['includeMilestones']) if parameters['includeMilestones'] is not None else 0
+        total_hatch_funding = float(
+            parameters['totalHatchFunding']) if parameters['totalHatchFunding'] is not None else 1571.22357
+        total_initial_tech_supply = float(
+            parameters['totalInitialTechSupply']) if parameters['totalInitialTechSupply'] is not None else 2041.86358
+        hatch_final_tech_price = float(
+            parameters['hatchFinalTechPrice']) if parameters['hatchFinalTechPrice'] is not None else 0.754743
 
         # add default steps
         steplist.insert(0, "[5000, 'wxDAI']")
@@ -128,7 +137,10 @@ class AugmentedBondingCurve(Resource):
                 virtual_balance=virtual_balance,
                 steplist=steplist,
                 zoom_graph=zoom_graph,
-                include_milestones=include_milestones
+                include_milestones=include_milestones,
+                total_hatch_funding=total_hatch_funding,
+                total_initial_tech_supply=total_initial_tech_supply,
+                hatch_final_tech_price=hatch_final_tech_price,
             )
         except ValueError as ve:
             return jsonify(str(ve))

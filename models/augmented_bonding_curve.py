@@ -122,15 +122,18 @@ class BondingCurveHandler():
                  virtual_balance=1,
                  zoom_graph=0,
                  plot_mode=0,
-                 include_milestones=0):
-
+                 include_milestones=0,
+                 total_hatch_funding=TOTAL_HATCH_FUNDING,
+                 total_initial_tech_supply=TOTAL_INITIAL_TECH_SUPPLY,
+                 hatch_final_tech_price=HATCH_FINAL_TECH_PRICE):
+        
         # scale input numbers down by 1000 for the bonding curve calculations
         ragequit_amount = ragequit_amount / 1000
         initial_buy = initial_buy / 1000
 
-        virtual_supply = TOTAL_INITIAL_TECH_SUPPLY if virtual_supply == 1 else (
+        virtual_supply = total_initial_tech_supply if virtual_supply == 1 else (
             virtual_supply / 1000)
-        virtual_balance = TOTAL_HATCH_FUNDING if virtual_balance == 1 else (
+        virtual_balance = total_hatch_funding if virtual_balance == 1 else (
             virtual_balance / 1000)
 
         # parse the steplist (which gets read as string) into the right format and scale the values
@@ -144,7 +147,7 @@ class BondingCurveHandler():
 
          # Determine initial supply and balance based on input
         self.initialization_supply, self.initialization_balance, self.commons_reserve = self.get_initialization_values(
-            received_supply=virtual_supply, received_balance=virtual_balance, commons_percentage=commons_percentage, initial_buy=initial_buy, ragequit_amount=ragequit_amount)
+            received_supply=virtual_supply, received_balance=virtual_balance, commons_percentage=commons_percentage, initial_buy=initial_buy, ragequit_amount=ragequit_amount, total_hatch_funding=total_hatch_funding,total_initial_tech_supply=total_initial_tech_supply,hatch_final_tech_price=hatch_final_tech_price)
 
         params_valid = self.check_param_validity(
             commons_percentage,
@@ -157,6 +160,7 @@ class BondingCurveHandler():
             steplist_parsed,
             float(self.initialization_supply),
             float(self.initialization_balance),
+            total_hatch_funding,
             int(zoom_graph),
             int(plot_mode)
         )
@@ -387,29 +391,29 @@ class BondingCurveHandler():
 
         return curve_draw
 
-    def get_initialization_values(self, received_supply, received_balance, commons_percentage, initial_buy, ragequit_amount):
+    def get_initialization_values(self, received_supply, received_balance, commons_percentage, initial_buy, ragequit_amount,total_hatch_funding,total_initial_tech_supply,hatch_final_tech_price):
         initialization_supply = -1
         initialization_balance = -1
 
-        if (received_supply == TOTAL_INITIAL_TECH_SUPPLY):
+        if (received_supply == total_initial_tech_supply):
             # no virtual supply, use real data
-            initialization_supply = TOTAL_INITIAL_TECH_SUPPLY - \
-                (ragequit_amount / HATCH_FINAL_TECH_PRICE)
+            initialization_supply = total_initial_tech_supply - \
+                (ragequit_amount / hatch_final_tech_price)
         else:
             # we just use the virtual supply
             initialization_supply = received_supply
 
-        if(received_balance == TOTAL_HATCH_FUNDING):
+        if(received_balance == total_hatch_funding):
             # no virtual balance, use real data
             initialization_balance = (
-                TOTAL_HATCH_FUNDING - ragequit_amount - initial_buy) * (1 - commons_percentage)
+                total_hatch_funding - ragequit_amount - initial_buy) * (1 - commons_percentage)
             commons_reserve = (
-                TOTAL_HATCH_FUNDING - ragequit_amount - initial_buy) * commons_percentage
+                total_hatch_funding - ragequit_amount - initial_buy) * commons_percentage
         else:
             # we just use the virtual balance
             initialization_balance = received_balance
             commons_reserve = (
-                TOTAL_HATCH_FUNDING - ragequit_amount - initial_buy) * commons_percentage
+                total_hatch_funding - ragequit_amount - initial_buy) * commons_percentage
 
         return initialization_supply, initialization_balance, commons_reserve
 
@@ -502,8 +506,8 @@ class BondingCurveHandler():
 
     # very basic validity check. TO DO expand balance and steplist checking
 
-    def check_param_validity(self, commons_percentage, ragequit_amount, opening_price, entry_tribute, exit_tribute, initial_buy,  initial_commons_reserve, steplist, initial_supply, initial_balance, zoom_graph, plot_mode):
-        if initial_buy < 0 or initial_buy > (TOTAL_HATCH_FUNDING - ragequit_amount):
+    def check_param_validity(self, commons_percentage, ragequit_amount, opening_price, entry_tribute, exit_tribute, initial_buy,  initial_commons_reserve, steplist, initial_supply, initial_balance,total_hatch_funding ,zoom_graph, plot_mode):
+        if initial_buy < 0 or initial_buy > (total_hatch_funding - ragequit_amount):
             raise ValueError(
                 "Error: The Initial Buy is either negative or bigger than the remaining Hatch Funding after Ragequits.")
         if commons_percentage < 0 or commons_percentage >= 1:
