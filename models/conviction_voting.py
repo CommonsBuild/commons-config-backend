@@ -8,7 +8,8 @@ class ConvictionVotingModel:
                  spending_limit=None,
                  minimum_conviction=None,
                  conviction_growth=None,
-                 voting_period_days=None):
+                 voting_period_days=None,
+                 table_scenarios=None):
         self.spending_limit = spending_limit if spending_limit is not None else 0.2
         self.minimum_conviction = minimum_conviction if minimum_conviction is not None else 0.005
         self.conviction_growth = conviction_growth if conviction_growth is not None else 2
@@ -16,7 +17,7 @@ class ConvictionVotingModel:
         self.staked_on_proposal = 1
         self.staked_on_other_proposals = 0
         self.min_active_stake_pct = 0.05
-        self.table_scenarios = {
+        self.default_table_scenarios = {
                 'totalEffectiveSupply': [
                     1_500_000,
                     1_500_000,
@@ -40,8 +41,19 @@ class ConvictionVotingModel:
                     750_000,
                     750_000,
                     750_000,
-                ],
+                ]
         }
+        self.table_scenarios = {
+                'totalEffectiveSupply': self.default_table_scenarios["totalEffectiveSupply"],
+                'requestedAmount': self.default_table_scenarios["requestedAmount"],
+                'amountInCommonPool': self.default_table_scenarios["amountInCommonPool"],
+        }
+
+        if table_scenarios is not None:
+            self.table_scenarios['totalEffectiveSupply'] += [proposal[2] for proposal in table_scenarios]
+            self.table_scenarios['requestedAmount'] += [proposal[0] for proposal in table_scenarios]
+            self.table_scenarios['amountInCommonPool'] += [proposal[1] for proposal in table_scenarios]
+
         self.output_dict = {}
         self.output_dict['input'] = {
             'spendingLimit': self.spending_limit,
@@ -120,20 +132,21 @@ class ConvictionVotingModel:
         for idx in range(len_scenarios):
             percentage_requested = scenarios['requestedAmount'][idx] / scenarios['amountInCommonPool'][idx]
             percentage_requested_threshold = self.get_threshold(percentage_requested)
-            if math.isinf(percentage_requested_threshold) or (self.get_threshold(percentage_requested) > 1):
+            percentage_requested_selected_period = self.current_conviction_pergentage_of_max(time=self.voting_period_days)
+            if math.isinf(percentage_requested_threshold) or (percentage_requested_threshold/percentage_requested_selected_period > 1):
                 scenarios['minTokensToPass'].append('Not possible')
                 scenarios['tokensToPassIn2Weeks'].append('Not possible')
             else:
                 scenarios['minTokensToPass'].append(
                     int(
                         scenarios['totalEffectiveSupply'][idx] *
-                        self.get_threshold(percentage_requested)
+                        percentage_requested_threshold
                     )
                 )
                 scenarios['tokensToPassIn2Weeks'].append(
                     int(
                         scenarios['minTokensToPass'][idx] / 
-                        self.current_conviction_pergentage_of_max(time=self.voting_period_days)
+                        percentage_requested_selected_period
                     )
                 )
             self.output_dict['output']['table'] = scenarios

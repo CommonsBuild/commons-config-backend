@@ -18,4 +18,6 @@ def get_data(issue_number):
     issue_data["convictionVoting"]["minimumConviction"] = 100 * issue_data["convictionVoting"]["minimumConviction"]
     issue_data["convictionVoting"]["spendingLimit"] = 100 * issue_data["convictionVoting"]["spendingLimit"]
 
+    issue_data["advancedSettings"]["minimumEffectiveSupply"] = 100 * issue_data["advancedSettings"]["minimumEffectiveSupply"]
+
     return issue_data
