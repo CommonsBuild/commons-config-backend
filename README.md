@@ -47,7 +47,7 @@ To do an API call with the model input and receive the model outputs, it uses a 
   "exitTribute": 0.15,
   "reserveBalance": 1571.22357,
   "initialBuy": 0,
-  "stepList": [[5000, "wxDai"], [100000, "wxDai"], [3000, "TEC"]],
+  "stepList": [[100, "wxDai"]],
   "zoomGraph": 0
 }
 ```

@@ -45,7 +45,7 @@ class IssueGeneratorModel:
             "entryTribute": 0.05,
             "exitTribute": 0.15,
             "hatchScenarioFunding": 1571.22357,
-            "stepList": [[5000, "wxDai"], [100000, "wxDai"], [3000, "TEC"]],
+            "stepList": [[100, "wxDai"]],
             "zoomGraph": 0,
             "includeMilestones": 1,
             "strategy": ""
@@ -96,7 +96,7 @@ class IssueGeneratorModel:
             opening_price=opening_price,
             entry_tribute=entry_tribute,
             exit_tribute=exit_tribute,
-            #scenario_reserve_balance=scenario_reserve_balance,
+            # scenario_reserve_balance=scenario_reserve_balance,
             initial_buy=initial_buy,
             steplist=steplist,
             zoom_graph=zoom_graph,
@@ -124,7 +124,8 @@ class IssueGeneratorModel:
                 reserve=abc_step_table["currentBalanceParsed"][idx],
                 total_supply=abc_step_table["currentSupplyParsed"][idx],
                 current_price=abc_step_table["currentPriceParsed"][idx],
-                amount_in=abc_step_table["amountInParsed"][idx]["amount"] + " " + abc_step_table["amountInParsed"][idx]["currency"],
+                amount_in=abc_step_table["amountInParsed"][idx]["amount"] +
+                " " + abc_step_table["amountInParsed"][idx]["currency"],
                 tribute_collected=abc_step_table["tributeCollectedParsed"][idx],
                 amount_out=abc_step_table["amountOutParsed"][idx],
                 new_price=abc_step_table["newPriceParsed"][idx],
@@ -249,7 +250,7 @@ class IssueGeneratorModel:
             self.conviction_voting.get("minimumConviction", ""),
             relative_spending_limit=100 *
             self.conviction_voting.get("spendingLimit", ""),
-            cv_steps=formated_cv_steps, 
+            cv_steps=formated_cv_steps,
 
             advanced_settings_section=formated_advanced_settings_data if self.advanced_settings else "",
             token_lockup_image=self.save_images_database(

@@ -21,7 +21,7 @@ class status(Resource):
     def get(self):
         try:
             return {'data': 'Api running'}
-        except(error):
+        except (error):
             return {'data': error}
 
 
@@ -121,9 +121,7 @@ class AugmentedBondingCurve(Resource):
             parameters['hatchFinalTechPrice']) if parameters['hatchFinalTechPrice'] is not None else 0.754743
 
         # add default steps
-        steplist.insert(0, "[5000, 'wxDAI']")
-        steplist.insert(1, "[100000, 'wxDAI']")
-        steplist.insert(2, "[3000, 'TEC']")
+        steplist.insert(0, "[100, 'wxDAI']")
 
         try:
             augmented_bonding_curve_model = BondingCurveHandler(
@@ -182,12 +180,10 @@ class IssueGenerator(Resource):
         abc['initialBuy'] = float(
             abc['initialBuy']) if abc['initialBuy'] is not None else 0
         # removed this line following the feature cut 25/11/21
-        #abc['reserveBalance'] = float(abc['reserveBalance']) if abc['reserveBalance'] is not None else (1571223.57 - abc.initial_buy - abc.ragequit_amount)*(1-abc.commons_percentage)
+        # abc['reserveBalance'] = float(abc['reserveBalance']) if abc['reserveBalance'] is not None else (1571223.57 - abc.initial_buy - abc.ragequit_amount)*(1-abc.commons_percentage)
         # change to account for new default steps
         abc['stepList'] = abc['stepList'] if abc['stepList'] is not abc else []
-        abc['stepList'].insert(0, "[5000, 'wxDAI']")
-        abc['stepList'].insert(1, "[100000, 'wxDAI']")
-        abc['stepList'].insert(2, "[3000, 'TEC']")
+        abc['stepList'].insert(0, "[100, 'wxDAI']")
         abc['virtualSupply'] = float(
             abc['virtualSupply']) if abc['virtualSupply'] is not None else 1
         abc['virtualBalance'] = float(
